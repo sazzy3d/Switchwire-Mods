@@ -1,0 +1,12 @@
+[homing_override]
+axes: z
+set_position_z: 0
+gcode:
+    G90                              ; Absolute positioning
+    G0 Z5 F500                       ; Raise Z to a safe height
+    G28 X Y                          ; Home X and Y first
+    G0 X207 Y105 F9000               ; Move to dock location
+    PROBE_ATTACH                      ; Attach probe before homing Z
+    G28 Z                             ; Home Z
+    PROBE_DETACH                      ; Detach probe after Z homing
+    G0 Z5 F500                        ; Raise Z again for safety

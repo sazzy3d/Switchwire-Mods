@@ -1,0 +1,31 @@
+[gcode_macro PROBE_ATTACH]
+description: "Move toolhead to attach Klicky Probe"
+gcode:
+    M117 Moving to Attach...
+    G90                             ; Absolute positioning
+    G0 Z30 F5000                    ; Raise Z to avoid obstacles
+    G0 X207 F9000                   ; Move to dock position
+    G4 P500                         ; Wait for probe to trigger (optional adjustment)
+    M117 Attaching Probe...
+    SET_SERVO SERVO=klicky_servo ANGLE=40  ; Move to docked position
+    G4 P500                        ; Wait for servo
+    SET_SERVO SERVO=klicky_servo ANGLE=130
+    g4 P500
+    G0 X125 F9000              ; Move away from dock
+    M117 Probe Attached
+
+[gcode_macro PROBE_DETACH]
+description: "Move toolhead to detach Klicky Probe"
+gcode:
+    M117 Moving to Detach...
+    G90                             ; Absolute positioning
+    G0 Z30 F5000                    ; Raise Z to avoid obstacles
+    G0 X207 F9000              ; Move to dock position
+    M117 Detaching Probe...
+    SET_SERVO SERVO=klicky_servo ANGLE=40   ; Move to deployed position
+    G4 P500                          ; Wait for servo to reach position (adjust as needed)
+    G0 X125 F9000              ; Move away from dock
+    G4 P500                         ; Give it some time before next action
+    SET_SERVO SERVO=klicky_servo ANGLE=130  ; Move to docked position
+    G4 P500                          ; Wait for servo to reach position
+    M117 Probe Detached
